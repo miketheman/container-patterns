@@ -61,10 +61,15 @@ You can use this starter policy by attaching it to a role. For example in CloudF
     Properties:
       AssumeRolePolicyDocument:
         Statement:
-        - Effect: Allow
-          Principal:
-            Service: [ecs-tasks.amazonaws.com]
-          Action: ['sts:AssumeRole']
+          - Effect: Allow
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+            Action: sts:AssumeRole
+            Condition:
+              ArnLike:
+                aws:SourceArn: !Sub "arn:aws:ecs:${AWS::Region}:${AWS::AccountId}:*"
+              StringEquals:
+                aws:SourceAccount: !Ref AWS::AccountId
       Path: /
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy

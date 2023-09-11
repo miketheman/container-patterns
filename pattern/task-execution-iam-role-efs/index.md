@@ -42,6 +42,11 @@ TaskExecutionRole:
           Principal:
             Service: ecs-tasks.amazonaws.com
           Action: sts:AssumeRole
+          Condition:
+            ArnLike:
+              aws:SourceArn: !Sub "arn:aws:ecs:${AWS::Region}:${AWS::AccountId}:*"
+            StringEquals:
+              aws:SourceAccount: !Ref AWS::AccountId
     ManagedPolicyArns:
       - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
 
